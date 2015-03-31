@@ -37,7 +37,7 @@ public class ResourceController extends BaseController<Resource, Long> {
 	 * @return
 	 */
 	@RequestMapping
-	public String view(Model model) {
+	public String list(Model model) {
 		model.addAttribute("entitys", resourceService.findAllResourceByOrder());
 		return "modules/sys/resourceList";
 	}
