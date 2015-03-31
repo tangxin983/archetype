@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false" name="hibernateCache">
+	 
+    <!-- 磁盘保存目录 -->
+    <diskStore path="java.io.tmpdir/ehcache/hibernate" />
+
+	<defaultCache maxEntriesLocalHeap="1000" eternal="false" timeToLiveSeconds="600"
+		overflowToDisk="true" maxEntriesLocalDisk="10000" />
+		
+</ehcache>

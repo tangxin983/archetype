@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-lazy-init="true">
+
+	<description>Shiro Configuration</description>
+	
+	<!-- 缓存管理器(Ehcache) -->
+	<bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="ehCacheManagerFactory"/>
+	</bean>
+
+	<!-- 密码验证 -->
+	<bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<property name="hashAlgorithmName" value="${credential.hashAlgorithmName}" />
+		<property name="hashIterations" value="${credential.hashIterations}" />
+	</bean>
+
+	<!-- 密码加密 -->
+	<bean id="passwordHelper" class="com.github.tx.archetype.modules.security.PasswordHelper">
+		<property name="algorithmName" value="${credential.hashAlgorithmName}" />
+		<property name="hashIterations" value="${credential.hashIterations}" />
+	</bean>
+
+	<!-- Realm实现 -->
+	<bean id="securityRealm" class="com.github.tx.archetype.modules.security.SecurityRealm">
+		<property name="credentialsMatcher" ref="credentialsMatcher" />
+	</bean>
+
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="securityRealm" />
+		<property name="cacheManager" ref="shiroCacheManager" />
+	</bean>
+	
+	<!-- 动态获取权限控制 -->
+	<bean id ="filterChainFactoryBean" class ="com.github.tx.archetype.modules.security.FilterChainFactoryBean" />
+	
+	<!-- 验证码表单拦截器 -->
+	<bean id ="captchaAuthenticationFilter" class ="com.github.tx.archetype.modules.security.CaptchaAuthenticationFilter" />
+
+	<!-- Shiro的Web过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- 注册验证码拦截器 -->
+		<property name="filters">
+			<map>
+				<entry key="captchaAuthc" value-ref="captchaAuthenticationFilter" />
+			</map>
+		</property>
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/login" />
+		<property name="successUrl" value="/index" />
+		<property name="unauthorizedUrl" value="/unauthorized" />
+		<property name="filterChainDefinitionMap" ref="filterChainFactoryBean" />
+	</bean>
+
+	<!-- Shiro生命周期处理器 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<!-- 开启shiro注解支持 -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+</beans>
