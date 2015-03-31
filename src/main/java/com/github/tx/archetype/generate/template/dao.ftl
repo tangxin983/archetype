@@ -1,7 +1,6 @@
 package ${packageName}.${moduleName}.dao${subModuleName};
 
-import com.github.tx.jsite.core.persistence.annotation.MyBatisDao;
-import com.github.tx.jsite.core.persistence.dao.BaseDao;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ${packageName}.${moduleName}.entity${subModuleName}.${ClassName};
 
 /**
@@ -9,7 +8,6 @@ import ${packageName}.${moduleName}.entity${subModuleName}.${ClassName};
  * @author ${classAuthor}
  * @since ${classVersion}
  */
-@MyBatisDao
-public interface ${ClassName}Dao extends BaseDao<${ClassName}> {
+public interface ${ClassName}Repository extends JpaRepository<${ClassName}, Long> {
 	
 }

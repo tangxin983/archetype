@@ -13,11 +13,10 @@ import javax.persistence.Transient;
 
 import com.github.tx.archetype.common.util.CollectionUtils;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "sys_user")
 public class User extends IdEntity {
-
-	private static final long serialVersionUID = 1L;
 
 	@Column(name = "login_name")
 	private String loginName;

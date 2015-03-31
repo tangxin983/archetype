@@ -9,9 +9,8 @@ import java.util.Set;
  * @author tangx
  *
  */
+@SuppressWarnings("serial")
 public class UserInfo implements Serializable {
-
-	private static final long serialVersionUID = 1L;
 
 	// 用户
 	private User user;
@@ -58,13 +57,5 @@ public class UserInfo implements Serializable {
 
 	public void setMenus(Set<Resource> menus) {
 		this.menus = menus;
-	}
-
-	/**
-	 * 本函数输出将作为默认的<shiro:principal/>输出.
-	 */
-	@Override
-	public String toString() {
-		return this.user != null ? this.user.getUserName() : "";
 	}
 }

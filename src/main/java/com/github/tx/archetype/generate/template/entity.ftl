@@ -2,11 +2,11 @@ package ${packageName}.${moduleName}.entity${subModuleName};
 
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.github.tx.jsite.core.persistence.entity.BaseEntity;
 
 /**
  * ${functionName}实体
@@ -14,8 +14,9 @@ import com.github.tx.jsite.core.persistence.entity.BaseEntity;
  * @since ${classVersion}
  */
 @SuppressWarnings("serial")
+@Entity
 @Table(name = "${tableName}")
-public class ${ClassName} extends BaseEntity {
+public class ${ClassName} extends IdEntity {
 
 	<#list entityFields as field>
 	@Column(name = "${field.colName}")
@@ -23,8 +24,7 @@ public class ${ClassName} extends BaseEntity {
 	@NotNull(message = "${field.colRemark}不能为空")
 	</#if>
 	<#if field.type == 'Date'>
-	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")// 表单提交时默认日期格式
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")// 默认输出格式
+	@Temporal(TemporalType.TIME)
 	</#if>
 	private ${field.type} ${field.name}; //${field.colRemark}
 	

@@ -99,6 +99,9 @@ public class ResourceController extends BaseController<Resource, Long> {
 
 	/**
 	 * 删除
+	 * @param id
+	 * @param redirectAttributes
+	 * @return
 	 */
 	@RequestMapping("delete/{id}")
 	public String delete(@PathVariable("id") Long id,

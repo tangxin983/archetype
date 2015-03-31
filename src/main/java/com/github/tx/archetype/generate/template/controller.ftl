@@ -1,4 +1,4 @@
-package ${packageName}.${moduleName}.controller${subModuleName};
+package ${packageName}.${moduleName}.web${subModuleName};
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.github.tx.jsite.core.web.controller.BaseController;
-import com.github.tx.jsite.core.persistence.entity.PageEntity;
+import com.github.tx.archetype.modules.core.BaseController;
 import ${packageName}.${moduleName}.entity${subModuleName}.${ClassName};
 import ${packageName}.${moduleName}.service${subModuleName}.${ClassName}Service;
 
@@ -26,104 +24,90 @@ import ${packageName}.${moduleName}.service${subModuleName}.${ClassName}Service;
  */
 @Controller
 @RequestMapping(value = "${urlPrefix}")
-public class ${ClassName}Controller extends BaseController<${ClassName}> {
-
-	private ${ClassName}Service ${className}Service;
+public class ${ClassName}Controller extends BaseController<${ClassName}, Long> {
 
 	@Autowired
-	public void set${ClassName}Service(${ClassName}Service ${className}Service) {
-		super.setService(${className}Service);
-		this.${className}Service = ${className}Service;
-	}
-	
-	// ========== 以下为简单crud示例。注意：一旦修改url，对应生成的视图url也需手动修改 ===========
+	private ${ClassName}Service ${className}Service;
+	 
 	/**
-	 * 展示列表页<p>
-	 * url:${urlPrefix}
+	 * 列表页
+	 * 
+	 * @param model
+	 * @param request
+	 * @return
 	 */
 	@RequestMapping
-	public String list(Model model) {
-		return super.list(model);
+	public String list(Model model, HttpServletRequest request) {
+		model.addAttribute("entitys", ${className}Service.findAll());
+		return "modules/${urlPrefix}List";
 	}
 	
 	/**
-	 * 获取数据<p>
-	 * url:${urlPrefix}?datagrid
-	 */
-	@RequestMapping(params = "datagrid")
-	@ResponseBody
-	public PageEntity<${ClassName}> datagrid(HttpServletRequest request) {
-		<#if isPagination>
-		return super.datagrid(request);
-		<#else>
-		return super.alldatagrid(request);
-		</#if>
-	}
-	
-	/**
-	 * 跳转新增页面<p>
-	 * url:${urlPrefix}/create
+	 * 新建页
+	 * @param model
+	 * @return
 	 */
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public String createForm(Model model) {
-		return super.createForm(model);
+		return "modules/${urlPrefix}Form";
 	}
-
+ 
 	/**
-	 * 新增操作<p>
-	 * url:${urlPrefix}/create
-	 */
-	@RequestMapping(value = "create", method = RequestMethod.POST)
-	public String create(@Valid ${ClassName} entity, BindingResult result, Model model,
-			RedirectAttributes redirectAttributes) {
-		return super.create(entity, result, model, redirectAttributes);
-	}
-	
-	/**
-	 * 跳转更新页面<p>
-	 * URL:${urlPrefix}/update/{id}
+	 * 更新页
+	 * @param id
+	 * @param model
+	 * @return
 	 */
 	@RequestMapping(value = "update/{id}", method = RequestMethod.GET)
-	public String updateForm(@PathVariable("id") String id, Model model) {
-		return super.updateForm(id, model);
+	public String updateForm(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("entity", ${className}Service.findOne(id));
+		return "modules/${urlPrefix}Form";
 	}
 	
 	/**
-	 * 更新操作<p>
-	 * URL:${urlPrefix}/update
+	 * 保存操作（id为空新增不为空更新）
+	 * @param entity
+	 * @param result
+	 * @param redirectAttributes
+	 * @return
 	 */
-	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("entity")${ClassName} entity, BindingResult result, 
-		Model model, RedirectAttributes redirectAttributes) {
-		return super.update(entity, result, model, redirectAttributes);
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	public String save(
+			@Valid @ModelAttribute("entity") ${ClassName} entity, BindingResult result,
+			RedirectAttributes redirectAttributes) {
+		if (result.hasErrors()) {
+			addMessage(redirectAttributes, getFieldErrorMessage(result));
+			return "redirect:/${urlPrefix}";
+		}
+		${className}Service.save(entity);
+		addMessage(redirectAttributes, "保存成功");
+		return "redirect:/${urlPrefix}";
 	}
 	
 	/**
-	 * 删除操作<p>
-	 * URL:${urlPrefix}/delete/{id}
+	 * 删除
+	 * @param id
+	 * @param redirectAttributes
+	 * @return
 	 */
 	@RequestMapping("delete/{id}")
-	public String delete(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
-		return super.delete(id, redirectAttributes);
+	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+		${className}Service.delete(id);
+		addMessage(redirectAttributes, "删除成功");
+		return "redirect:/${urlPrefix}";
 	}
 	
 	/**
-	 * 批量删除操作<p>
-	 * URL:${urlPrefix}/delete
+	 * 批量删除
+	 * @param ids
+	 * @param redirectAttributes
+	 * @return
 	 */
 	@RequestMapping("delete")
-	public String delete(@RequestParam("ids")List<String> ids,RedirectAttributes redirectAttributes) {
-		return super.delete(ids, redirectAttributes);
-	}
-	
-	/**
-	 * 根据id查找实体（json）<p>
-	 * URL:${urlPrefix}/get/{id}
-	 */
-	@RequestMapping("get/{id}")
-	@ResponseBody
-	public ${ClassName} get(@PathVariable("id") String id) {
-		return super.get(id);
+	public String multiDel(@RequestParam("ids")List<Long> ids, RedirectAttributes redirectAttributes) {
+		${className}Service.delete(ids);
+		addMessage(redirectAttributes, "删除成功");
+		return "redirect:/${urlPrefix}";
 	}
 
 }

@@ -13,11 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "sys_resource")
 public class Resource extends IdEntity {
-
-	private static final long serialVersionUID = 1L;
 
 	@Column(name = "resource_name")
 	private String resourceName;

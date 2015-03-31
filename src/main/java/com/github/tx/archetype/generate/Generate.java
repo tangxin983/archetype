@@ -52,18 +52,18 @@ public class Generate {
 		 */
 
 		// 以下参数必填
-		String packageName = "tangx.jsite.site.modules";// 生成代码所处包名
-		String moduleName = "cms"; // 模块名，例：sys
-		String className = "summary"; // 功能英文名，例：user
-		String functionName = "评论"; // 功能中文名，例：用户
-		String tpl = "/src/main/resources/template";// 模板目录
+		String packageName = "com.github.tx.archetype.modules";// 生成代码所处包名
+		String moduleName = "sys"; // 模块名，例：sys
+		String className = "dict"; // 功能英文名，例：user
+		String functionName = "字典"; // 功能中文名，例：用户
+		String tpl = "/src/main/java/com/github/tx/archetype/generate/template";// 模板目录
 		String view = "/src/main/webapp/WEB-INF/views";// 视图目录
 
 		// 以下参数可选
 		String subModuleName = ""; // 子模块名
-		String tableName = "summary"; // 功能对应的数据库表名（若为空则默认与className一致）例如:sys_user
+		String tableName = "sys_dict"; // 功能对应的数据库表名（若为空则默认与className一致）例如:sys_user
 		String author = "tangx"; // 作者
-		Boolean isPagination = true;// 列表页是否分页 true分页false不分页
+		Boolean isPagination = false;// 列表页是否分页 true分页false不分页
 
 		// ========== ↑↑↑↑↑↑ 执行前请修改参数，谨慎执行。↑↑↑↑↑↑ ====================
 
@@ -156,7 +156,7 @@ public class Generate {
 		content = FreeMarkers.renderTemplate(template, model);
 		filePath = javaPath + separator + model.get("moduleName") + separator
 				+ "dao" + separator + StringUtils.lowerCase(subModuleName)
-				+ separator + model.get("ClassName") + "Dao.java";
+				+ separator + model.get("ClassName") + "Repository.java";
 		FileUtils.writeFile(content, filePath);
 		logger.info("Dao: {}", filePath);
 
@@ -173,7 +173,7 @@ public class Generate {
 		template = cfg.getTemplate("controller.ftl");
 		content = FreeMarkers.renderTemplate(template, model);
 		filePath = javaPath + separator + model.get("moduleName") + separator
-				+ "controller" + separator
+				+ "web" + separator
 				+ StringUtils.lowerCase(subModuleName) + separator
 				+ model.get("ClassName") + "Controller.java";
 		FileUtils.writeFile(content, filePath);

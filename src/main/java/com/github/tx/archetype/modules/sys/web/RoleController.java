@@ -95,6 +95,9 @@ public class RoleController extends BaseController<Role, Long> {
 	
 	/**
 	 * 批量删除
+	 * @param ids
+	 * @param redirectAttributes
+	 * @return
 	 */
 	@RequestMapping("delete")
 	public String multiDel(@RequestParam("ids")List<Long> ids,RedirectAttributes redirectAttributes) {
