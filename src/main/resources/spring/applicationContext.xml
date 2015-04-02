@@ -49,6 +49,11 @@
 	<jpa:repositories base-package="com.github.tx"
 		entity-manager-factory-ref="entityManagerFactory"
 		transaction-manager-ref="transactionManager" />
+		
+	<!-- 用于审计信息 -->
+	<bean id="systemAuditorAware" class="com.github.tx.archetype.modules.core.SystemAuditorAware" />
+		
+	<jpa:auditing auditor-aware-ref="systemAuditorAware" />
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>

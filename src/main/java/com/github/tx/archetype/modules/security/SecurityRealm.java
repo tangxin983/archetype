@@ -73,7 +73,7 @@ public class SecurityRealm extends AuthorizingRealm {
 			throw new UnknownAccountException();
 		}
 		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-				user.getLoginName(), // 用户登录名
+				user, // 用户实体
 				user.getPassword(), // 密码
 				ByteSource.Util.bytes(user.getCredentialsSalt()),// salt=loginName+salt
 				getName());
@@ -86,8 +86,8 @@ public class SecurityRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(
 			PrincipalCollection principals) {
-		String loginName = (String) principals.getPrimaryPrincipal();
-		User user = userService.findByLoginName(loginName);
+		User principal = (User) principals.getPrimaryPrincipal();
+		User user = userService.findByLoginName(principal.getLoginName());
 		Set<Role> roles = user.getRoles();// 用户角色集合
 		Set<Resource> resources = new HashSet<>();// 用户资源集合
 		for (Role role : roles) {

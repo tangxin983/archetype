@@ -11,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.github.tx.archetype.common.util.CollectionUtils;
 
 @SuppressWarnings("serial")
@@ -100,5 +102,13 @@ public class User extends IdEntity {
 	public Set<Long> getRoleIds() {
 		Set<Long> ids = CollectionUtils.extractToSet(this.roles, "id", true);
 		return ids;
+	}
+
+	/**
+	 * 本函数输出将作为默认的<shiro:principal/>输出.
+	 */
+	@Override
+	public String toString() {
+		return StringUtils.isNotBlank(this.userName) ? this.userName : "";
 	}
 }
