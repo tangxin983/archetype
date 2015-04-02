@@ -20,7 +20,7 @@
 			<div class="text-muted bootstrap-admin-box-title">${functionName}编辑</div>
 		</div>
 		<div class="panel-body">
-			<form class="form-horizontal" action="${r"${ctxModule}"}/${r"${action}"}" method="post">
+			<form class="form-horizontal" action="${r"${ctxModule}"}/save" method="post">
 				<input type="hidden" name="id" value="${r"${entity.id}"}">
 				<#list entityFields as field>
 				<div class="form-group">

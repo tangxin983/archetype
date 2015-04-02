@@ -41,7 +41,7 @@
 		</div>
 		<div class="panel-body">
 			<form id="viewForm" action="${ctxModule}/delete" valid="false" method="post">
-				<table id="treeTable" class="table table-striped table-hover">
+				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="selectAll"></th>

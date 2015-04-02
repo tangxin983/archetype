@@ -9,8 +9,10 @@
 	-->
 	<script type="text/javascript">
 	function del(){
-		return confirmx_func('确定要删除选中的记录吗?', function(){
-			location.href = "${r"${ctxModule}"}/delete/" + $("#${className}TableSelectedId").val();
+		$("[name='ids']").each(function(){
+			if($(this).is(":checked")){
+				return confirmx_func('确定要删除选中的记录吗?', function(){$("#viewForm").submit();})
+			}
 		});
 	}
 	</script>
@@ -23,9 +25,15 @@
 		<form class="navbar-form navbar-left" valid="false">
 			<#list entityFields as field>
 			<div class="form-group">
-				<input name="eq_${field.name}" class="form-control" placeholder="${field.colRemark}">
+				<input name="s_${field.name}" value="${r"${param.s_"}${field.name}}" class="form-control" placeholder="${field.colRemark}">
 			</div>
 			</#list>
+			<a href="${r"${ctxModule}"}/create" class="btn btn-primary"> 
+				<span class="glyphicon glyphicon-plus"></span> 添加
+			</a>
+			<a onclick="del()" class="btn btn-danger">
+				<span class="glyphicon glyphicon-remove"></span> 删除
+			</a>
 		</form>
 	</nav>
 
@@ -34,23 +42,40 @@
 			<div class="text-muted bootstrap-admin-box-title">${functionName}列表</div>
 		</div>
 		<div class="panel-body">
-			<!-- table -->
-			<ui:datagrid id="${className}Table" title="${functionName}列表" <#if isPagination>serverSide="true"<#else>serverSide="false"</#if>
-				queryUrl="${r"${ctxModule}"}?datagrid" css="table table-striped table-hover table-bordered">
-				<ui:dgToolBar title="查询" script="${className}Table.draw();" />
-				<shiro:hasPermission name="${permissionPrefix}:create">
-				<ui:dgToolBar title="添加" url="${r"${ctxModule}"}/create" />
-				</shiro:hasPermission>
-				<shiro:hasPermission name="${permissionPrefix}:edit">
-				<ui:dgToolBar title="编辑" type="select" url="${r"${ctxModule}"}/update/{selected}" />
-				</shiro:hasPermission>
-				<shiro:hasPermission name="${permissionPrefix}:delete">
-				<ui:dgToolBar title="删除" type="select" onclick="del" />
-				</shiro:hasPermission>
-				<#list entityFields as field>
-				<ui:dgCol title="${field.colRemark}" field="${field.name}"></ui:dgCol>
-				</#list>
-			</ui:datagrid>
+			<form id="viewForm" action="${r"${ctxModule}"}/delete" valid="false" method="post">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="selectAll"></th>
+							<#list entityFields as field>
+							<th>${field.colRemark}</th>
+							</#list>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${r"${entitys}"}" var="entity">
+							<tr>
+								<td><input type="checkbox" name="ids" value="${r"${entity.id}"}"></td>
+								<#list entityFields as field>
+								<#if field_index == 0>
+		    					<td>
+		    						<a href="${r"${ctxModule}"}/update/${r"${entity.id}"}" title="修改">
+										${r"${entity."}${field.name}}
+									</a>
+		    					</td>
+		    					<#else>
+			    				<#if field.type == 'Date'>
+								<td><fmt:formatDate value="${r"${entity."}${field.name}}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+								<#else>
+								<td>${r"${entity."}${field.name}}</td>
+								</#if>
+								</#if>
+								</#list>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</form>	 
 		</div>
 	</div>
 	
