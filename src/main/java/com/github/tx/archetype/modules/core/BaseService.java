@@ -6,6 +6,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +36,7 @@ public abstract class BaseService<T, ID extends Serializable> {
 	public T save(T entity) {
 		return repo.save(entity);
 	}
-	 
+
 	/**
 	 * 批量新增或更新记录(主键为null则新增否则更新)
 	 * 
@@ -68,6 +70,15 @@ public abstract class BaseService<T, ID extends Serializable> {
 	}
 
 	/**
+	 * 分页获取记录
+	 * @param pageable 分页参数
+	 * @return 
+	 */
+	public Page<T> findAll(Pageable pageable) {
+		return repo.findAll(pageable);
+	}
+
+	/**
 	 * 获取记录数
 	 * 
 	 * @return 记录数
@@ -86,7 +97,7 @@ public abstract class BaseService<T, ID extends Serializable> {
 	public void delete(ID id) {
 		repo.delete(id);
 	}
-	
+
 	/**
 	 * 批量删除主键对应的记录
 	 * 
@@ -95,7 +106,7 @@ public abstract class BaseService<T, ID extends Serializable> {
 	 */
 	@Transactional
 	public void delete(Iterable<ID> ids) {
-		for(ID id : ids){
+		for (ID id : ids) {
 			repo.delete(id);
 		}
 	}

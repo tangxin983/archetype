@@ -115,3 +115,28 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('1', '1');
 INSERT INTO `sys_user_role` VALUES ('2', '2');
+
+-- ----------------------------
+-- Table structure for `sys_dict`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `label` varchar(100) NOT NULL COMMENT '字典名称',
+  `value` varchar(100) NOT NULL COMMENT '字典值',
+  `type` varchar(100) NOT NULL COMMENT '字典类型',
+  `description` varchar(100) NOT NULL COMMENT '描述',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(32) DEFAULT NULL COMMENT '最近更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '最近更新时间',
+  PRIMARY KEY (`id`),
+  KEY `sys_dict_value` (`value`),
+  KEY `sys_dict_label` (`label`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字典表';
+
+-- ----------------------------
+-- Records of sys_dict
+-- ----------------------------
+INSERT INTO `sys_dict` VALUES ('1', '链接模型', 'link', 'cms_module', '链接模型', '唐欣', '2015-04-02 17:55:43', '唐欣', '2015-04-02 18:04:07');
+INSERT INTO `sys_dict` VALUES ('2', '文章模型', 'article', 'cms_module', '文章模型', '唐欣', '2015-04-02 18:04:32', '唐欣', '2015-04-02 18:04:32');
