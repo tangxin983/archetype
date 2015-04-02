@@ -25,9 +25,12 @@
 		<form class="navbar-form navbar-left" valid="false">
 			<#list entityFields as field>
 			<div class="form-group">
-				<input name="s_${field.name}" value="${r"${param.s_"}${field.name}}" class="form-control" placeholder="${field.colRemark}">
+				<input name="lk_${field.name}" value="${r"${param.lk_"}${field.name}}" class="form-control" placeholder="${field.colRemark}">
 			</div>
 			</#list>
+			<button type="submit" class="btn btn-primary">
+				<span class="glyphicon glyphicon-search"></span> 查询
+			</button>
 			<a href="${r"${ctxModule}"}/create" class="btn btn-primary"> 
 				<span class="glyphicon glyphicon-plus"></span> 添加
 			</a>

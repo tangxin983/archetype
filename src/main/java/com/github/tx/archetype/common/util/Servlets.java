@@ -16,6 +16,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import com.google.common.collect.Maps;
@@ -134,9 +135,10 @@ public class Servlets {
 	 * 取得带相同前缀的Request Parameters，返回结果的Parameter名已去除前缀
 	 * @param request
 	 * @param prefix 前缀
+	 * @param ignoreEmptyValue 是否忽略空值
 	 * @return
 	 */
-	public static Map<String, Object> getParametersStartingWith(ServletRequest request, String prefix) {
+	public static Map<String, Object> getParametersStartingWith(ServletRequest request, String prefix, boolean ignoreEmptyValue) {
 		Validate.notNull(request, "Request must not be null");
 		Enumeration paramNames = request.getParameterNames();
 		Map<String, Object> params = Maps.newHashMap();
@@ -158,7 +160,13 @@ public class Servlets {
 				} else if (values.length > 1) {
 					params.put(unprefixed, values);
 				} else {
-					params.put(unprefixed, values[0]);
+					if(!ignoreEmptyValue){
+						params.put(unprefixed, values[0]);
+					}else{
+						if(StringUtils.isNotBlank(values[0])){
+							params.put(unprefixed, values[0]);
+						}
+					}
 				}
 			}
 		}

@@ -24,11 +24,14 @@
 	<nav class="navbar navbar-default">
 		<form class="navbar-form navbar-left" valid="false">
 			<div class="form-group">
-				<input name="s_label" value="${param.s_label}" class="form-control" placeholder="字典名称">
+				<input name="lk_label" value="${param.lk_label}" class="form-control" placeholder="字典名称">
 			</div>
 			<div class="form-group">
-				<input name="s_type" value="${param.s_type}" class="form-control" placeholder="字典类型">
+				<input name="lk_type" value="${param.lk_type}" class="form-control" placeholder="字典类型">
 			</div>
+			<button type="submit" class="btn btn-primary">
+				<span class="glyphicon glyphicon-search"></span> 查询
+			</button>
 			<a href="${ctxModule}/create" class="btn btn-primary"> 
 				<span class="glyphicon glyphicon-plus"></span> 添加
 			</a>

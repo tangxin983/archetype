@@ -1,16 +1,8 @@
 package com.github.tx.archetype.modules.sys.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,26 +43,5 @@ public class RoleService extends BaseService<Role, Long> {
 			}
 		}
 		return roleRepository.save(entity);
-	}
-
-	
-	/**
-	 * 根据前端页面条件做动态查询
-	 * @param searchParams
-	 * @return
-	 */
-	public List<Role> dynamicQuery(final Map<String, Object> searchParams) {
-		return roleRepository.findAll(new Specification<Role> () {
-			@Override
-			public Predicate toPredicate(Root<Role> root,
-					CriteriaQuery<?> query, CriteriaBuilder cb) {
-				List<Predicate> predicates = new ArrayList<>();
-				if(searchParams.get("roleName") != null){
-					predicates.add(cb.like(root.get("roleName").as(String.class), "%" + String.valueOf(searchParams.get("roleName")) + "%"));
-				}
-				Predicate[] pre = new Predicate[predicates.size()];
-				return query.where(predicates.toArray(pre)).getRestriction();
-			} 
-		});
 	}
 }

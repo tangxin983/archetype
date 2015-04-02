@@ -1,6 +1,6 @@
 package com.github.tx.archetype.modules.sys.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.github.tx.archetype.modules.core.BaseRepository;
 import com.github.tx.archetype.modules.sys.entity.Dict;
 
 /**
@@ -8,6 +8,6 @@ import com.github.tx.archetype.modules.sys.entity.Dict;
  * @author tangx
  * @since 2015-04-02
  */
-public interface DictRepository extends JpaRepository<Dict, Long> {
+public interface DictRepository extends BaseRepository<Dict, Long> {
 	
 }

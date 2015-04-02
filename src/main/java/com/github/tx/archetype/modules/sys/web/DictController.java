@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,8 +48,15 @@ public class DictController extends BaseController<Dict, Long> {
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "size", defaultValue = "3") int size,
 			Model model, HttpServletRequest request) {
-		Page<Dict> dicts = dictService.findAll(new PageRequest(page - 1, size));
+		Page<Dict> dicts = dictService.dynamicQuery(request, new PageRequest(page - 1, size));
 		model.addAttribute("page", dicts);
+		String queryStr = request.getQueryString();
+		if(StringUtils.isNotBlank(queryStr)){
+			if(queryStr.indexOf("page=") != -1){
+				queryStr = queryStr.substring(queryStr.indexOf("&") + 1);
+			}
+			model.addAttribute("searchParams", queryStr);
+		}
 		return "modules/sys/dictList";
 	}
 

@@ -2,8 +2,7 @@ package com.github.tx.archetype.modules.sys.dao;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import com.github.tx.archetype.modules.core.BaseRepository;
 import com.github.tx.archetype.modules.sys.entity.Resource;
 
 /**
@@ -13,7 +12,7 @@ import com.github.tx.archetype.modules.sys.entity.Resource;
  * @since 2015年1月27日
  */
 
-public interface ResourceRepository extends JpaRepository<Resource, Long> {
+public interface ResourceRepository extends BaseRepository<Resource, Long> {
 
 	// 相当于select * from sys_resource where href is not null order by sort asc
 	/**

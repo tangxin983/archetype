@@ -1,7 +1,6 @@
 package com.github.tx.archetype.modules.sys.web;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.github.tx.archetype.common.util.Servlets;
 import com.github.tx.archetype.modules.core.BaseController;
 import com.github.tx.archetype.modules.sys.entity.User;
 import com.github.tx.archetype.modules.sys.service.RoleService;
@@ -42,8 +40,7 @@ public class UserController extends BaseController<User, Long> {
 	 */
 	@RequestMapping
 	public String list(Model model, HttpServletRequest request) {
-		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "s_");
-		model.addAttribute("entitys", userService.dynamicQuery(searchParams));
+		model.addAttribute("entitys", userService.dynamicQuery(request));
 		return "modules/sys/userList";
 	}
 	

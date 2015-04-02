@@ -1,17 +1,8 @@
 package com.github.tx.archetype.modules.sys.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,28 +56,5 @@ public class UserService extends BaseService<User, Long> {
 			}
 		}
 		return userRepository.save(user);
-	}
-	
-	/**
-	 * 根据前端页面条件做动态查询
-	 * @param searchParams
-	 * @return
-	 */
-	public List<User> dynamicQuery(final Map<String, Object> searchParams) {
-		return userRepository.findAll(new Specification<User> () {
-			@Override
-			public Predicate toPredicate(Root<User> root,
-					CriteriaQuery<?> query, CriteriaBuilder cb) {
-				List<Predicate> predicates = new ArrayList<>();
-				if(searchParams.get("userName") != null){
-					predicates.add(cb.like(root.get("userName").as(String.class), "%" + String.valueOf(searchParams.get("userName")) + "%"));
-				}
-				if(searchParams.get("loginName") != null){
-					predicates.add(cb.like(root.get("loginName").as(String.class), "%" + String.valueOf(searchParams.get("loginName")) + "%"));
-				}
-				Predicate[] pre = new Predicate[predicates.size()];
-				return query.where(predicates.toArray(pre)).getRestriction();
-			} 
-		});
 	}
 }

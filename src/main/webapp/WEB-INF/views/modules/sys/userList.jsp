@@ -20,10 +20,10 @@
 	<nav class="navbar navbar-default">
 		<form class="navbar-form navbar-left" valid="false">
 			<div class="form-group">
-				<input name="s_userName" value="${param.s_userName}" class="form-control" placeholder="姓名">
+				<input name="lk_userName" value="${param.lk_userName}" class="form-control" placeholder="姓名">
 			</div>
 			<div class="form-group">
-				<input name="s_loginName" value="${param.s_loginName}" class="form-control" placeholder="登录名">
+				<input name="lk_loginName" value="${param.lk_loginName}" class="form-control" placeholder="登录名">
 			</div>
 			<button type="submit" class="btn btn-primary">
 				<span class="glyphicon glyphicon-search"></span> 查询

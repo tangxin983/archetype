@@ -1,7 +1,6 @@
 package com.github.tx.archetype.modules.sys.web;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.github.tx.archetype.common.util.Servlets;
 import com.github.tx.archetype.modules.core.BaseController;
 import com.github.tx.archetype.modules.sys.entity.Role;
 import com.github.tx.archetype.modules.sys.service.RoleService;
@@ -42,8 +40,7 @@ public class RoleController extends BaseController<Role, Long> {
 	 */
 	@RequestMapping
 	public String list(Model model, HttpServletRequest request) {
-		Map<String, Object> searchParams = Servlets.getParametersStartingWith(request, "s_");
-		model.addAttribute("entitys", roleService.dynamicQuery(searchParams));
+		model.addAttribute("entitys", roleService.dynamicQuery(request));
 		// 将搜索条件编码成字符串，用于分页的URL
 //		model.addAttribute("searchParams",
 //				Servlets.encodeParameterStringWithPrefix(searchParams, "s_"));

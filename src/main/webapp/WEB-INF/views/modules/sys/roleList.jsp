@@ -20,7 +20,7 @@
 	<nav class="navbar navbar-default">
 		<form class="navbar-form navbar-left" valid="false">
 			<div class="form-group">
-				<input name="s_roleName" value="${param.s_roleName}" class="form-control" placeholder="角色名称">
+				<input name="lk_roleName" value="${param.lk_roleName}" class="form-control" placeholder="角色名称">
 			</div>
 			<button type="submit" class="btn btn-primary">
 				<span class="glyphicon glyphicon-search"></span> 查询

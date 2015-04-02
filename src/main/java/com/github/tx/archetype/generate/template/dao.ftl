@@ -1,6 +1,6 @@
 package ${packageName}.${moduleName}.dao${subModuleName};
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.github.tx.archetype.modules.core.BaseRepository;
 import ${packageName}.${moduleName}.entity${subModuleName}.${ClassName};
 
 /**
@@ -8,6 +8,6 @@ import ${packageName}.${moduleName}.entity${subModuleName}.${ClassName};
  * @author ${classAuthor}
  * @since ${classVersion}
  */
-public interface ${ClassName}Repository extends JpaRepository<${ClassName}, Long> {
+public interface ${ClassName}Repository extends BaseRepository<${ClassName}, Long> {
 	
 }
