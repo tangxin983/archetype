@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.PageRequest;
 import com.github.tx.archetype.modules.core.BaseController;
 import ${packageName}.${moduleName}.entity${subModuleName}.${ClassName};
 import ${packageName}.${moduleName}.service${subModuleName}.${ClassName}Service;
