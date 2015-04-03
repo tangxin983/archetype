@@ -29,6 +29,25 @@ public class ${ClassName}Controller extends BaseController<${ClassName}, Long> {
 	@Autowired
 	private ${ClassName}Service ${className}Service;
 	 
+	<#if isPagination>
+	/**
+	 * 列表页
+	 * @param page
+	 * @param size
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping
+	public String list(
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size,
+			Model model, HttpServletRequest request) {
+		model.addAttribute("page", ${className}Service.dynamicQuery(request, new PageRequest(page - 1, size)));
+		model.addAttribute("searchParams", this.getQueryString(request));
+		return "modules/${urlPrefix}List";
+	}	
+	<#else>
 	/**
 	 * 列表页
 	 * 
@@ -38,9 +57,10 @@ public class ${ClassName}Controller extends BaseController<${ClassName}, Long> {
 	 */
 	@RequestMapping
 	public String list(Model model, HttpServletRequest request) {
-		model.addAttribute("entitys", ${className}Service.findAll());
+		model.addAttribute("entitys", ${className}Service.dynamicQuery(request));
 		return "modules/${urlPrefix}List";
 	}
+	</#if> 
 	
 	/**
 	 * 新建页

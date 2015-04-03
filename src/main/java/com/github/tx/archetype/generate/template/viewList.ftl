@@ -56,7 +56,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<#if isPagination>
+						<c:forEach items="${r"${page.content}"}" var="entity">
+						<#else>
 						<c:forEach items="${r"${entitys}"}" var="entity">
+						</#if>
 							<tr>
 								<td><input type="checkbox" name="ids" value="${r"${entity.id}"}"></td>
 								<#list entityFields as field>
@@ -79,6 +83,9 @@
 					</tbody>
 				</table>
 			</form>	 
+			<#if isPagination>
+			<tags:pagination page="${r"${page}"}" />
+			</#if>
 		</div>
 	</div>
 	

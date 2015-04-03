@@ -55,7 +55,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${entitys}" var="entity">
+						<c:forEach items="${page.content}" var="entity">
 							<tr>
 								<td><input type="checkbox" name="ids" value="${entity.id}"></td>
 								<td>${entity.loginName}</td>
@@ -71,6 +71,7 @@
 					</tbody>
 				</table>
 			</form>
+			<tags:pagination page="${page}" />
 		</div>
 	</div>
 

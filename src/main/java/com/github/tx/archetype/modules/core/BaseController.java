@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ import com.google.common.collect.Lists;
 public abstract class BaseController<T, ID extends Serializable> implements ServletContextAware {
 
 	protected Logger logger = LoggerFactory.getLogger(getClass());
+	
+	protected static final String DEFAULT_PAGE_SIZE = "3"; 
 
 	@Autowired
 	private BaseService<T, ID> service;
@@ -82,6 +86,21 @@ public abstract class BaseController<T, ID extends Serializable> implements Serv
 		}
 		message.add(0, "数据校验失败：");
 		return message.toArray(new String[] {});
+	}
+	
+	/**
+	 * 获取查询字符串（去掉page参数）
+	 * @param request
+	 * @return
+	 */
+	protected String getQueryString(HttpServletRequest request) {
+		String queryStr = request.getQueryString();
+		if(StringUtils.isNotBlank(queryStr)){
+			if(queryStr.indexOf("?page=") != -1){
+				queryStr = queryStr.substring(queryStr.indexOf("&") + 1);
+			}
+		}
+		return queryStr;
 	}
 
 	/**
