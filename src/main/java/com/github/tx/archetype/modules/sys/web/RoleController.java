@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,16 +40,18 @@ public class RoleController extends BaseController<Role, Long> {
 	 * @return
 	 */
 	@RequestMapping
-	public String list(Model model, HttpServletRequest request) {
-		model.addAttribute("entitys", roleService.dynamicQuery(request));
-		// 将搜索条件编码成字符串，用于分页的URL
-//		model.addAttribute("searchParams",
-//				Servlets.encodeParameterStringWithPrefix(searchParams, "s_"));
+	public String list(
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size,
+			Model model, HttpServletRequest request) {
+		model.addAttribute("page", roleService.dynamicQuery(request, new PageRequest(page - 1, size)));
+		model.addAttribute("searchParams", this.getQueryString(request));
 		return "modules/sys/roleList";
 	}
 
 	/**
 	 * 新建页
+	 * 
 	 * @param model
 	 * @return
 	 */
@@ -59,6 +62,7 @@ public class RoleController extends BaseController<Role, Long> {
 
 	/**
 	 * 更新页
+	 * 
 	 * @param id
 	 * @param model
 	 * @return
@@ -71,6 +75,7 @@ public class RoleController extends BaseController<Role, Long> {
 
 	/**
 	 * 保存操作（id为空新增不为空更新）
+	 * 
 	 * @param entity
 	 * @param resourceIds
 	 * @param redirectAttributes
@@ -78,27 +83,30 @@ public class RoleController extends BaseController<Role, Long> {
 	 */
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public String save(
-			@Valid @ModelAttribute("entity") Role entity, BindingResult result,
+			@Valid @ModelAttribute("entity") Role entity,
+			BindingResult result,
 			@RequestParam(value = "resourceIds", required = false) List<Long> resourceIds,
 			RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			addMessage(redirectAttributes, getFieldErrorMessage(result));
 			return "redirect:/sys/role";
 		}
-		roleService.saveRole(entity, resourceIds);//注意需添加resource集合，否则中间表记录不会被自动维护
+		roleService.saveRole(entity, resourceIds);// 注意需添加resource集合，否则中间表记录不会被自动维护
 		addMessage(redirectAttributes, "保存成功");
 		return "redirect:/sys/role";
 	}
-	
+
 	/**
 	 * 批量删除
+	 * 
 	 * @param ids
 	 * @param redirectAttributes
 	 * @return
 	 */
 	@RequestMapping("delete")
-	public String multiDel(@RequestParam("ids")List<Long> ids,RedirectAttributes redirectAttributes) {
-		roleService.delete(ids);//这里没有设置resource集合，所以在删除角色后会自动删除此角色对应的中间表记录
+	public String multiDel(@RequestParam("ids") List<Long> ids,
+			RedirectAttributes redirectAttributes) {
+		roleService.delete(ids);// 这里没有设置resource集合，所以在删除角色后会自动删除此角色对应的中间表记录
 		addMessage(redirectAttributes, "删除成功");
 		return "redirect:/sys/role";
 	}
