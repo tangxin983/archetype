@@ -25,7 +25,7 @@ import com.github.tx.archetype.modules.sys.service.ResourceService;
 
 @Controller
 @RequestMapping("/sys/resource")
-public class ResourceController extends BaseController<Resource, Long> {
+public class ResourceController extends BaseController {
 
 	@Autowired
 	private ResourceService resourceService;
@@ -133,6 +133,24 @@ public class ResourceController extends BaseController<Resource, Long> {
 			mapList.add(map);
 		}
 		return mapList;
+	}
+	
+	/**
+	 * 在每个controller方法开始前执行，作用如下：
+	 * <p>
+	 * 1、设置上下文参数供前端页面使用
+	 * <p>
+	 * 2、如果表单id参数不为空，说明是更新操作。此时先根据id从数据库查出对象,再把表单提交的内容绑定到该对象上，
+	 * 避免表单字段不完整更新为null的情况
+	 */
+	@ModelAttribute
+	public void populateModel(
+			@RequestParam(value = "id", required = false) Long id, Model model) {
+		if (id != null) {
+			model.addAttribute("entity", resourceService.findOne(id));
+		}
+		model.addAttribute("module", getControllerContext());// 项目上下文
+		model.addAttribute("ctxModule", servletContext.getContextPath() + "/" + getControllerContext());// 模块上下文
 	}
 
 }
